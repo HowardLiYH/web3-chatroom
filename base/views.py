@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from base.models import Room  # Adjust the import statement based on the directory structure
+from .forms import RoomForm  # Adjust the import statement based on the directory structure
+
 
 # Create your views here.
 
@@ -19,3 +21,38 @@ def room(request, pk):
     room = Room.objects.get(id=pk)  # pylint: disable=no-member
     context = {'room': room}
     return render(request, 'base/room.html', context)
+
+def createRoom(request):
+    form = RoomForm()
+
+    if request.method == 'POST':
+        form = RoomForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+    context = {'form': form}
+    return render(request, 'base/room_form.html', context)
+
+
+def updateRoom(request, pk):
+    room = Room.objects.get(id=pk)  # pylint: disable=no-member
+    form = RoomForm(instance=room)
+
+    if request.method == 'POST':
+        form = RoomForm(request.POST, instance=room)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+
+    context = {'form': form}
+    return render(request, 'base/room_form.html', context)
+
+
+def deleteRoom(request, pk):
+    room = Room.objects.get(id=pk)  # pylint: disable=no-member
+    if request.method == 'POST':
+        room.delete()
+        return redirect('home')
+    return render(request, 'base/delete.html', {'obj': room})
