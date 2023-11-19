@@ -2,3 +2,6 @@
 Link to the Guidance: https://www.youtube.com/watch?v=PtQiiknWUcI&t=6941s
 
 Up to: 2:06:56
+
+Website: http://127.0.0.1:8000/
+Admin Mode: http://127.0.0.1:8000/admin/
